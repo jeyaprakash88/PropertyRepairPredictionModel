@@ -31,9 +31,6 @@
 #    _______________________________
 # 
 
-# In[1]:
-
-
 import sklearn
 import numpy as np
 import pandas as pd
@@ -59,7 +56,6 @@ from sklearn.linear_model import LogisticRegression
 
 # ## Load the data :
 
-# In[2]:
 
 
 # Data path
@@ -69,14 +65,7 @@ df = pd.read_excel('data.xlsx')
 
 # ## 1.Exploratory Data Analysis by analyzing the dataset<a name="1"></a>
 
-# In[3]:
-
-
 df.info()
-
-
-# In[4]:
-
 
 # Results
 print(f'Data dimension: {df.shape}')
@@ -85,36 +74,17 @@ print (df.columns)
 # Display the first few rows of the DataFrame
 df.head()
 
-
-# In[5]:
-
-
 # Check the summary statistics of numeric columns
 df.describe()
 
-
-# In[6]:
-
-
 df.dtypes
-
-
-# In[7]:
-
 
 # 5.Descriptive summary of the dataset:
 df_num = df[df.describe().columns]
 display(df_num.describe().round(2))
 df_num.boxplot()
 
-
-# In[8]:
-
-
 pd.DataFrame(df.nunique())
-
-
-# In[9]:
 
 
 # Set the figure size
@@ -136,10 +106,6 @@ for p in ax.patches:
 # Display the plot
 plt.show()
 
-
-# In[10]:
-
-
 # Count plot for categorical columns
 categorical_cols = ['job_type', 'jobsts-cde', 'postcode', 'loc-nam-2', 'Building_type', 'tenu_cde', 'rntpaymd_cde', 'ttncytyp_cde', 'pty_classification_subtype']
 for col in categorical_cols:
@@ -149,10 +115,6 @@ for col in categorical_cols:
     plt.ylabel('Count')
     plt.title(f'Count Plot of {col}')
     plt.show()
-
-
-# In[11]:
-
 
 import matplotlib.pyplot as plt
 
@@ -186,10 +148,6 @@ for i, p in enumerate(wedges):
 
 plt.show()
 
-
-# In[12]:
-
-
 categories = df['pty_classification'].unique()
 values = df['pty_classification'].value_counts()
 
@@ -222,9 +180,6 @@ ax.set_title("Donut Chart")
 plt.show()
 
 
-# In[13]:
-
-
 building_types = df['Building_type'] 
 building_type_counts = building_types.value_counts()
 
@@ -253,10 +208,6 @@ plt.xticks(rotation=45, ha='right')
 plt.tight_layout()
 plt.show()
 
-
-# In[14]:
-
-
 # Stacked Bar Plot
 stacked_counts = df.groupby(['job_type', 'pty_classification']).size().unstack(fill_value=0)
 stacked_counts.plot(kind='bar', stacked=True, figsize=(15, 6))
@@ -265,10 +216,6 @@ plt.xlabel('Job Type')
 plt.ylabel('Count')
 plt.legend(title='Priority Classification')
 plt.show()
-
-
-# In[15]:
-
 
 # Histograms for numeric columns
 numeric_cols = ['pr-seq-no', 'void-num', 'str-cde', 'Age', 'ownership-%', 'No_of_bedroom', 'Days_to_complete']
@@ -289,11 +236,6 @@ for cat in numeric_cols:
     plt.figure(figsize=(20,1))    
     sns.boxplot(data=df, x=cat,palette='Blues')
  
-
-
-# In[17]:
-
-
 #Pearson's correlation
 corrmat = df.corr()
 top_corr_features = corrmat.index
@@ -304,26 +246,14 @@ g=sns.heatmap(df[top_corr_features].corr(),annot=True,cmap="Blues")
 
 # ### 4.2. Spearman's correlation <a name="42"></a>
 
-# In[18]:
-
-
 #Spearman's correlation
 corr = df.corr(method='spearman')
 g = sns.heatmap(corr, annot=True, cmap="Blues")
 sns.despine()
 g.figure.set_size_inches(10,10)
 
-
-# In[19]:
-
-
 # Matches the above value counts
 print(df['pty_classification'].value_counts())
-
-
-# In[20]:
-
-
 print(df['sortrd-cde-1'].unique())
 print(df['jobsts-cde'].unique())
 print(df['postcode'].unique())
@@ -334,19 +264,11 @@ print(df['rntpaymd_cde'].unique())
 print(df['ttncytyp_cde'].unique())
 print(df['pty_classification_subtype'].unique())
 
-
-# In[21]:
-
-
 # Find the missing data by percentage
 total = df.isnull().sum()
 percentage = (total/df.isnull().count()).round(4)*100
 NAs = pd.concat([total,percentage],axis=1,keys=('Total','Percentage'))
 NAs[NAs.Total>0].sort_values(by='Total',ascending=False)
-
-
-# In[22]:
-
 
 df.dropna(subset = ['postcode'], inplace=True)
 df = df.drop(columns=['num', 'job_type', 'rtb-dat', 'demolish-dat', 'prtyp-cde', 'construction-yr'])
@@ -355,10 +277,6 @@ df['No_of_bedroom'] = df['No_of_bedroom'].fillna(0)
 df['ownership-%'] = df['ownership-%'].fillna(100)
 df['jobsts-cde'] = df['jobsts-cde'].astype(str)
 df['postcode'] = df['postcode'].replace(0, method='ffill')
-
-
-# In[23]:
-
 
 # Split the postcode column into two columns
 df[['postcode_part1', 'postcode_part2']] = df['postcode'].str.split(' ', 1, expand=True)
@@ -379,15 +297,7 @@ town_mapping = {
 # Map the values in the postcode_part1 column to the corresponding town names
 df['town'] = df['postcode_part1'].map(town_mapping)
 
-
-# In[24]:
-
-
 df['pty_classification'].unique()
-
-
-# In[25]:
-
 
 # Splitting the data into features and target
 df1 = df
@@ -408,19 +318,12 @@ preprocessor = ColumnTransformer([
     ('categorical', OneHotEncoder(), ['sortrd-cde-1', 'jobsts-cde', 'loc-nam-2', 'town', 'Building_type', 'tenu_cde', 'rntpaymd_cde', 'right-to-repair', 'ttncytyp_cde', 'pty_classification_subtype'])
 ])
 
-
-# In[26]:
-
-
 print(X.shape)
 print(y.shape)
 print("X_train shape {} and size {}".format(X_train.shape,X_train.size))
 print("X_test shape {} and size {}".format(X_test.shape,X_test.size))
 print("y_train shape {} and size {}".format(y_train.shape,y_train.size))
 print("y_test shape {} and size {}".format(y_test.shape,y_test.size))
-
-
-# In[27]:
 
 
 import matplotlib.pyplot as plt
@@ -462,9 +365,6 @@ def evaluate_models(models, X_train, X_test, y_train, y_test, preprocessor):
 
 # ### Logistic Regression
 
-# In[28]:
-
-
 # Define the models
 models = [('LogisticRegression', LogisticRegression())]
 
@@ -473,10 +373,6 @@ results, cm, report = evaluate_models(models, X_train, X_test, y_train, y_test, 
 
 
 # ### Decision Tree
-
-# In[29]:
-
-
 from sklearn.tree import DecisionTreeClassifier
 
 # Define the models
@@ -487,10 +383,6 @@ results, cm, report = evaluate_models(models, X_train, X_test, y_train, y_test, 
 
 
 # ### BaggingClassifier
-
-# In[30]:
-
-
 from sklearn.ensemble import BaggingClassifier
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, ConfusionMatrixDisplay
 from sklearn.pipeline import Pipeline
@@ -536,9 +428,6 @@ for result, confusion_matrix, classification_report in zip(results, cm, report):
 
 # ### GradientBoostingClassifier
 
-# In[ ]:
-
-
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, ConfusionMatrixDisplay
 from sklearn.pipeline import Pipeline
@@ -583,9 +472,6 @@ for result, confusion_matrix, classification_report in zip(results, cm, report):
 
 
 # ### XGBClassifier
-
-# In[ ]:
-
 
 # Import the necessary libraries
 from sklearn.preprocessing import LabelEncoder, StandardScaler, OneHotEncoder
@@ -645,9 +531,6 @@ plt.show()
 
 # ### Export the model as pickle
 
-# In[ ]:
-
-
 import joblib
 import pickle
 
@@ -659,9 +542,6 @@ with open ('saved_steps.pkl', 'wb') as file:
 # ## XGB Classifier with SMOTE
 # 
 # SMOTE addresses class imbalance in real-world datasets by generating synthetic examples for the minority class, balancing class distribution and enabling the model to learn from it. This improves generalization performance by preventing overfitting on the majority class and providing additional diversity and complexity in training data.
-
-# In[19]:
-
 
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
@@ -721,14 +601,9 @@ plt.figure(figsize=(len(unique_labels), len(unique_labels)))
 cm_display.plot(xticks_rotation=90)
 plt.show()
 
-
 # The comparison between an XGBClassifier model with and without using the SMOTE (Synthetic Minority Over-sampling Technique) technique for handling imbalanced classes in our dataset. From the classification report, we are drawing the conclusion that the XGBClassifier without SMOTE is performing well, especially in predicting the minor classes.
 
 # ### ROC curve and AUC
-
-# In[93]:
-
-
 from sklearn.metrics import roc_auc_score, roc_curve, auc
 from sklearn.preprocessing import LabelBinarizer
 from sklearn.multiclass import OneVsRestClassifier
@@ -760,9 +635,6 @@ plt.ylabel('True Positive Rate')
 plt.title('ROC Curve - Multi-Class Classification')
 plt.legend(loc="lower right")
 plt.show()
-
-
-# In[ ]:
 
 
 import numpy as np
@@ -814,10 +686,6 @@ plt.show()
 
 
 # ### **Hyperparameter search using random search**<a name="82"></a>
-
-# In[88]:
-
-
 # Imports
 from sklearn.model_selection import RandomizedSearchCV
 from sklearn.metrics import roc_auc_score
@@ -847,21 +715,11 @@ print(random_search.best_params_)
 
 # Extract best model 
 best_model = random_search.best_estimator_
-
-
-# In[81]:
-
-
 best_model
 
 
 # # Model with Hyperparameters
 # without hyper parameter tuning our model is performing well hence we select the base model with change in thresh hold.
-
-# In[107]:
-
-
-
 # Initialize XGBoost classifier with the best hyperparameters
 best_model = XGBClassifier(subsample=0.8, n_estimators=500, max_depth=6, learning_rate=0.05)
 sm = SMOTE(random_state=42)
@@ -893,10 +751,6 @@ plt.show()
 
 
 # ## Feature Importance<a name="83"></a>
-
-# In[99]:
-
-
 from xgboost import plot_importance
 from matplotlib import pyplot as plt
 from sklearn.pipeline import Pipeline
@@ -908,18 +762,7 @@ model = XGBClassifier()
 # Fit model on the preprocessed training data
 model.fit(X_train_preprocessed, y_train)
 
-
-# In[101]:
-
-
 # Plot feature importance
 plot_importance(model, max_num_features=15, importance_type='weight')  # You can also use 'gain' or 'cover'
 plt.xticks(rotation='vertical')  # Rotate x-axis labels for better visibility
 plt.show()
-
-
-# In[ ]:
-
-
-
-
