@@ -24,7 +24,7 @@ The application is built using Flask and Streamlit and relies on a trained XGBoo
 
 1. Clone the repository:
 ```
-git clone <repository_url>
+git clone <git@github.com:jeyaprakash88/PropertyRepairPredictionModel.git>
 ```
 
 2. Navigate to the project directory:
@@ -38,9 +38,9 @@ pip install -r requirements.txt
 ```
 (Note: Ensure you have a `requirements.txt` file that lists all the dependencies.)
 
-4. Run the Streamlit app:
+4. Run the File:
 ```
-streamlit run app1.py
+classification_model.py
 ```
 
 ## Usage
@@ -70,4 +70,6 @@ Feel free to fork the repository, create a feature branch, and open a Pull Reque
 
 ## License
 
-Please add a suitable license based on your preferences or requirements.
+This project is licensed under the [MIT License](LICENSE), offering you the freedom to adapt and modify it to suit your unique needs. [Click here](LICENSE) to view the full license.
+
+Explore, adapt, and utilize this project as a launchpad for crafting your own prediction model. Here's to illuminating data exploration!
