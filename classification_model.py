@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # 22081255
 # 
 # ## Predicting Repair demand
 # 
@@ -65,7 +64,7 @@ from sklearn.linear_model import LogisticRegression
 
 # Data path
 #load and store data into a dataframe
-df = pd.read_excel('C:/Users/c22081255/OneDrive - Cardiff University/Desktop/Data Science and Analytics/Dissertation/Data/02. Flat Files/repairs.xlsx')
+df = pd.read_excel('data.xlsx')
 
 
 # ## 1.Exploratory Data Analysis by analyzing the dataset<a name="1"></a>
