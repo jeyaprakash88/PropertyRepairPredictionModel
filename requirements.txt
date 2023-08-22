@@ -1,0 +1,11 @@
+
+Flask
+streamlit
+pandas
+xgboost
+scikit-learn
+matplotlib
+seaborn
+joblib
+pickle5
+mpld3
